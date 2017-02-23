@@ -31,5 +31,7 @@ module RailsApiExample
       g.fixture_replacement :factory_girl
     end
 
+    # Raise exception on invalid params
+    config.action_controller.action_on_unpermitted_parameters = :raise
   end
 end

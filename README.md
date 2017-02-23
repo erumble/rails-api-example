@@ -1,24 +1,8 @@
-# README
+## TODO
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+1. figure out crappy way to revoke tokens (sign out), see jti
+2. research refresh tokens
+3. how does this work with SageID
+4. user recovery
+5. user update
+6. authorization

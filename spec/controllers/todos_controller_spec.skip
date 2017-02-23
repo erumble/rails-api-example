@@ -52,13 +52,6 @@ RSpec.describe TodosController, type: :controller do
     end
   end
 
-  describe "GET #new" do
-    it "assigns a new todo as @todo" do
-      get :new, params: {}, session: valid_session
-      expect(assigns(:todo)).to be_a_new(Todo)
-    end
-  end
-
   describe "GET #edit" do
     it "assigns the requested todo as @todo" do
       todo = Todo.create! valid_attributes
