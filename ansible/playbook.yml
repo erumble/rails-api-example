@@ -1,0 +1,104 @@
+---
+- name: Provision Impact dev environment
+  hosts: all
+  become: yes
+
+  vars:
+    ruby_version: 2.3.3
+    ruby_checksum: sha256:241408c8c555b258846368830a06146e4849a1d58dcaf6b14a3b6a73058115b7
+    ruby_major_minor: "{{ ruby_version | regex_replace('^([0-9]*[.][0-9]*)[.][0-9]*$', '\\1') }}"
+    ruby_download_url: "http://cache.ruby-lang.org/pub/ruby/{{ ruby_major_minor }}/ruby-{{ ruby_version }}.tar.gz"
+    home_dir: /home/vagrant
+    src_dir: "{{ home_dir }}/src/{{ project_base_dir }}"
+    rails_port: 3000
+
+  pre_tasks:
+    - debug:
+        var: ruby_download_url
+
+    - name: setup epel
+      yum:
+        name: epel-release
+        state: present
+
+    - name: install rerequisite packages
+      yum:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - readline-devel
+        - libyaml-devel
+        - libffi-devel
+        - nodejs
+
+    - name: add github.com to known_hosts
+      become: no
+      known_hosts:
+        name: github.com
+        path: "{{ home_dir }}/.ssh/known_hosts"
+        key: "{{ lookup('pipe', 'ssh-keyscan -t rsa github.com') }}"
+
+    - name: download ruby, because the sage network keeps timing out
+      become: yes
+      get_url:
+        url: "{{ ruby_download_url }}"
+        dest: "/root/ruby-{{ ruby_version }}.tar.gz"
+        checksum: "{{ ruby_checksum }}"
+        timeout: 60
+
+  roles:
+    - role: geerlingguy.ruby
+      ruby_install_from_source: true
+
+    - role: geerlingguy.mysql
+      mysql_root_username: root
+      mysql_root_password: ''
+      mysql_packages:
+        - mariadb
+        - mariadb-server
+        - mariadb-libs
+        - mariadb-devel
+        - MySQL-python
+        - perl-DBD-MySQL
+      mysql_users:
+        - name: developer
+          host: '%'
+          password: developer
+          priv: "*.*:ALL"
+
+  tasks:
+    - name: bundle install
+      become: no
+      bundler:
+        gemfile: "{{ src_dir }}/Gemfile"
+        state: present
+
+    - name: setup db
+      become: no
+      command: "{{ item }}"
+      args:
+        chdir: "{{ src_dir }}"
+      with_items:
+        - 'bundle exec rake db:setup'
+
+    - name: add alias to start server
+      become: no
+      lineinfile:
+        dest: "{{ home_dir }}/.bashrc"
+        owner: vagrant
+        group: vagrant
+        line: "start_server() { cd {{ src_dir }} && bundle exec rails s -p {{ rails_port }} -b 0.0.0.0; }"
+        regexp: "^start_server.*$"
+        state: present
+        insertafter: EOF
+        create: yes
+
+    - name: update /etc/hosts
+      lineinfile:
+        dest: /etc/hosts
+        line: "{{ item.ip }}    {{ item.hostname }}"
+        regexp: ".*{{ item.hostname }}$"
+        state: present
+        insertafter: EOF
+      with_items:
+        "{{ etc_hosts | default([]) }}"
