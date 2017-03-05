@@ -20,7 +20,8 @@
 # Ignore Byebug command history file.
 .byebug_history
 
-# vagrant, ansible, vim
+# vagrant, ansible, vim, etc...
 *.retry
 .vagrant
 *.swp
+**/*.env
