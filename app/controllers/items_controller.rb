@@ -1,6 +1,6 @@
 class ItemsController < ApplicationController
-  before_action :set_item, only: [:show, :update, :destroy]
   before_action :set_todo
+  before_action :set_item, only: [:show, :update, :destroy]
   before_action :authenticate_user
 
   # GET /todos/:todo_id/items
@@ -36,11 +36,11 @@ class ItemsController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_item
-    @item = Item.find(params[:id])
+    @item = @todo.items.find(params[:id])
   end
 
   def set_todo
-    @todo = Todo.find(params[:todo_id])
+    @todo = current_user.todos.find(params[:todo_id])
   end
 
   # Only allow a trusted parameter "white list" through.

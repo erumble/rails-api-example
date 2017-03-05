@@ -4,7 +4,7 @@ module RequestSpecHelper
   end
 
   def authenticate_user(user)
-    token = Knock::AuthToken.new(payload: {sub: user.sub }).token
+    token = Knock::AuthToken.new(payload: { sub: user.sub }).token
     { 'Authorization': "Bearer #{token}" }
   end
 end

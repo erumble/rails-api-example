@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe "Todos", type: :request do
   let!(:user) { create :user }
   let(:headers) { authenticate_user(user) }
-  let!(:todos) { create_list(:todo, 10) }
+  let!(:todos) { create_list(:todo, 10, user: user) }
   let(:todo_id) { todos.first.id }
 
   describe "GET /todos" do

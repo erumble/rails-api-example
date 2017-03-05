@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe 'Items', type: :request do
   let!(:user) { create :user }
   let(:headers) { authenticate_user(user) }
-  let!(:todos) { create_list(:todo, 3) }
+  let!(:todos) { create_list(:todo, 3, user: user) }
   let!(:items1) { create_list(:item, 10, todo_id: todos.first.id) }
   let!(:items2) { create_list(:item, 10, todo_id: todos.second.id) }
   let(:item_id) { items1.first.id }
