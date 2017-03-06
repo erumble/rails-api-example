@@ -1,12 +1,11 @@
 class ItemsController < ApplicationController
+  before_action :authenticate_user
   before_action :set_todo
   before_action :set_item, only: [:show, :update, :destroy]
-  before_action :authenticate_user
 
   # GET /todos/:todo_id/items
   def index
     @items = @todo.items
-
     render json: @items
   end
 
