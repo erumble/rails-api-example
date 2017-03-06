@@ -2,9 +2,19 @@ require 'rails_helper'
 
 RSpec.describe "Todos", type: :request do
   let!(:user) { create :user }
-  let(:headers) { authenticate_user(user) }
+  let(:headers) { get_authorization_header(user) }
   let!(:todos) { create_list(:todo, 10, user: user) }
   let(:todo_id) { todos.first.id }
+
+  authenticable_actions = [
+    { method: 'get', route: '/todos' },
+    { method: 'get', route: '/todos/1' },
+    { method: 'post', route: '/todos' },
+    { method: 'put', route: '/todos/1' },
+    { method: 'delete', route: '/todos/1' }
+  ]
+
+  expect_authentication_failures_for authenticable_actions
 
   describe "GET /todos" do
     before { get '/todos', headers: headers }
