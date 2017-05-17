@@ -1,0 +1,16 @@
+#!/bin/sh
+# wait-for-mysql
+
+TIMEOUT=30
+
+count=0
+
+until mysqladmin -h 'db' ping;
+do
+    sleep 1
+    count=$((count+1))
+    if [[ $count == $TIMEOUT ]]; then
+        echo 'Could not connect to database'
+        exit 1
+    fi
+done

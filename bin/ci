@@ -1,0 +1,42 @@
+#!/bin/sh
+# bin/ci
+
+rspec() {
+    bin/wait-for-mysql
+
+    bundle exec rails db:setup
+
+    # use $2 so you can execute it similar to the rspec command
+    # ex: bin/ci rspec <file>
+    bundle exec rspec $2
+}
+
+start() {
+    if [ -f tmp/pids/server.pid ]; then
+        rm -f tmp/pids/server.pid
+    fi
+
+    bundle exec rails s $*
+}
+
+init_db() {
+    bin/wait-for-mysql
+
+    bundle exec rails db:drop
+    bundle exec rails db:setup
+}
+
+case "$1" in
+    start)
+        shift
+        start $*
+        ;;
+    rspec)
+        rspec
+        ;;
+    init_db)
+        init_db
+        ;;
+    *)
+        echo "Usage: bin/ci {start|rspec|init_db}"
+esac
