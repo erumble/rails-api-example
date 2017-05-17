@@ -30,6 +30,9 @@ gem 'puma', '~> 3.0'
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 # gem 'rack-cors'
 
+# Alpine Linux wants tzinfo-data, so Alpine Linux gets tzinfo-data
+gem 'tzinfo-data', '~> 1.2017', '>= 1.2017.2'
+
 # Use Knock to authenticate users
 gem 'knock', '~> 2.1.1'
 
