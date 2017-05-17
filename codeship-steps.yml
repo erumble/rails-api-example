@@ -1,0 +1,4 @@
+---
+- name: run specs
+  service: app
+  command: bin/ci rspec

@@ -1,0 +1,15 @@
+---
+app:
+  build:
+    image: api-example
+    dockerfile: Dockerfile
+  environment:
+    AUTH0_CLIENT_ID: 'OI3ctdXfGbgmwXEsxp9rOv33LvMAuMJB'
+    AUTH0_CLIENT_SECRET: 'eUxHYUZ2RTdDZHZPNFFralctMkpEblEyWmxPQlJPSzJoZmp2QnAxVEtFRTZRdW9rblhmTnRfZ2RnTjkyVVNBcA'
+  links:
+    - db
+db:
+  image: mysql:5.7
+  environment:
+    MYSQL_ROOT_PASSWORD: ''
+    MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
