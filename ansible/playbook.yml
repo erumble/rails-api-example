@@ -66,6 +66,8 @@
           password: developer
           priv: "*.*:ALL"
 
+    - role: geerlingguy.docker
+
   tasks:
     - name: bundle install
       become: no
@@ -102,3 +104,9 @@
         insertafter: EOF
       with_items:
         "{{ etc_hosts | default([]) }}"
+
+    - name: add user vagrant to docker group
+      user:
+        name: vagrant
+        groups: docker
+        append: yes

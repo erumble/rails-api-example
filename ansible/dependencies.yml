@@ -5,3 +5,4 @@
 - src: geerlingguy.ruby
 - src: geerlingguy.mysql
 - src: geerlingguy.memcached
+- src: geerlingguy.docker
