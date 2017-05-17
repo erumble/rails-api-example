@@ -13,5 +13,8 @@ services:
       - '.:/usr/src/app'
     ports:
       - '3000:3000'
+    environment:
+      AUTH0_CLIENT_ID: 'OI3ctdXfGbgmwXEsxp9rOv33LvMAuMJB'
+      AUTH0_CLIENT_SECRET: 'eUxHYUZ2RTdDZHZPNFFralctMkpEblEyWmxPQlJPSzJoZmp2QnAxVEtFRTZRdW9rblhmTnRfZ2RnTjkyVVNBcA'
     depends_on:
       - db
