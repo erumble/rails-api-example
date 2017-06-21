@@ -1,0 +1,3 @@
+FROM busybox
+
+COPY build-version.sh bin/build-version

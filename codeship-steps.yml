@@ -1,4 +1,11 @@
 ---
-- name: run specs
-  service: app
-  command: bin/ci rspec
+- type: serial
+  steps:
+    - name: create version file
+      service: version-builder
+      command: build-version
+
+    - name: run specs
+      service: app
+      command: bin/ci rspec
+

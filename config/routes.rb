@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :version, only: [:index]
+
   resources :todos do
     resources :items
   end

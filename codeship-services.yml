@@ -8,8 +8,19 @@ app:
     AUTH0_CLIENT_SECRET: 'eUxHYUZ2RTdDZHZPNFFralctMkpEblEyWmxPQlJPSzJoZmp2QnAxVEtFRTZRdW9rblhmTnRfZ2RnTjkyVVNBcA'
   links:
     - db
+
 db:
   image: mysql:5.7
   environment:
     MYSQL_ROOT_PASSWORD: ''
     MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+
+version-builder:
+  build:
+    image: version-builder
+    dockerfile: Dockerfile.version-builder
+  environment:
+    ARTIFACT_DIR: /data
+  volumes:
+    - ./lib:/data
+
